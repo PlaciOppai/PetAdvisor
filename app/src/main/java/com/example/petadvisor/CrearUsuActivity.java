@@ -1,13 +1,21 @@
 package com.example.petadvisor;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -17,34 +25,63 @@ public class CrearUsuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usu);
-        ((Button)findViewById(R.id.bCrearUsu)).setEnabled(false);
+        final String contra=((EditText)findViewById(R.id.editTextContra)).getText().toString();
+        final String repitaC=((EditText)findViewById(R.id.editTextRepita)).getText().toString();
+        final String correo=((EditText)findViewById(R.id.editTextCorreo)).getText().toString();
+        //((Button)findViewById(R.id.bCrearUsu)).setEnabled(false);
 
-       /* ((TextView)findViewById(R.id.editTextRepita)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        ((Button)findViewById(R.id.bCrearUsu)).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(((EditText)findViewById(R.id.editTextContra)).getText().toString()==(((EditText)findViewById(R.id.editTextRepita))).getText().toString()){
-                    ((TextView)findViewById(R.id.textcontra)).setText("Contraseña correcta");
+            public void onClick(View v) {
+                if(correo.isEmpty()){
+                    ((TextView)findViewById(R.id.textcontra)).setText("Es obligatorio ingresar un correo");
+                }else{
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Intent alojamientosCre= new Intent(getApplicationContext(),AlojamientosActivity.class);
+                                startActivityForResult(alojamientosCre,0);
+                            }else {
+                                showAlert();
+                            }
+                        }
+                    });
                 }
-                else {
-                    ((TextView)findViewById(R.id.textcontra)).setText("Contraseñas incorrectas");
-                }
-                return false;
             }
         });
-        ((TextView)findViewById(R.id.editTextRepita)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(((EditText)findViewById(R.id.editTextContra)).getText().toString()==(((EditText)findViewById(R.id.editTextRepita))).getText().toString()){
-                    ((TextView)findViewById(R.id.textcontra)).setText("Contraseña correcta");
-                    ((Button)findViewById(R.id.bCrearUsu)).setEnabled(true);
-                }
-                else {
-                    ((TextView)findViewById(R.id.textcontra)).setText("Contraseñas incorrectas");
-                }
 
-            }
-        });
-        */
+
+
 
     }
+    public boolean validaContraseña(String contra1, String contra2){
+        if(!contra1.isEmpty() && !contra2.isEmpty()){
+            if(contra1.equals(contra2)){
+                return true;
+            }else{
+                ((TextView)findViewById(R.id.textcontra)).setText("Las contraseñas no coinciden");
+            }
+
+        }else if(contra2.isEmpty()){
+            ((TextView)findViewById(R.id.textcontra)).setText("Las contraseñas no coinciden");
+        }else if(contra1.isEmpty() && !contra2.isEmpty()){
+            ((TextView)findViewById(R.id.textcontra)).setText("Ingrese una contraseña");
+        }else if(contra1.isEmpty() && contra2.isEmpty()){
+            ((TextView)findViewById(R.id.textcontra)).setText("Rellene los campos obligatorios");
+        }
+        return false;
+    }
+
+    private void showAlert(){
+        AlertDialog.Builder dialog= new AlertDialog.Builder(this);
+        dialog.setTitle("Error");
+        dialog.setMessage("Ya existe un usuario con este correo");
+        dialog.setPositiveButton("Aceptar",null);
+        dialog.show();
+
+    }
+
+
+
 }
