@@ -51,6 +51,12 @@ public class CrearUsuActivity extends AppCompatActivity {
             }
         });
 
+        ((Button)findViewById(R.id.bCancelar)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
 

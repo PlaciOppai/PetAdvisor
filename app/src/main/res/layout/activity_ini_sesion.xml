@@ -42,14 +42,21 @@
             android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/editTextContra"
-            android:layout_width="match_parent"
+            android:id="@+id/editTextContraIni"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPersonName"
             android:password="true" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvValidaCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
