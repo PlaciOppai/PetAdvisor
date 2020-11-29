@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -21,24 +22,34 @@ import org.w3c.dom.Text;
 
 public class CrearUsuActivity extends AppCompatActivity {
 
+    String correoN;
+    String contraN;
+    String repitaCN;
+    FirebaseAuth firebaseCrear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usu);
-        final String contra=((EditText)findViewById(R.id.editTextContra)).getText().toString();
-        final String repitaC=((EditText)findViewById(R.id.editTextRepita)).getText().toString();
-        final String correo=((EditText)findViewById(R.id.editTextCorreo)).getText().toString();
+        firebaseCrear=FirebaseAuth.getInstance();
         //((Button)findViewById(R.id.bCrearUsu)).setEnabled(false);
 
         ((Button)findViewById(R.id.bCrearUsu)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(correo.isEmpty()){
+                contraN=((EditText)findViewById(R.id.editTextContra)).getText().toString();
+                repitaCN=((EditText)findViewById(R.id.editTextRepita)).getText().toString();
+                correoN=((EditText)findViewById(R.id.editTextCorreo)).getText().toString();
+
+                Log.i("correo",correoN);
+                if(correoN.isEmpty()){
                     ((TextView)findViewById(R.id.textcontra)).setText("Es obligatorio ingresar un correo");
+
                 }else{
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo,contra).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    firebaseCrear.createUserWithEmailAndPassword(correoN,contraN).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+
                             if(task.isSuccessful()){
                                 Intent alojamientosCre= new Intent(getApplicationContext(),AlojamientosActivity.class);
                                 startActivityForResult(alojamientosCre,0);
