@@ -2,6 +2,7 @@ package com.example.petadvisor;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class AdaptardorListV extends BaseAdapter {
     public AdaptardorListV(Context context,ArrayList<Alojamientos> listaAlojamientos) {
         this.context=context;
         this.listaAlojamientos = listaAlojamientos;
+
 
     }
 
@@ -55,6 +57,11 @@ public class AdaptardorListV extends BaseAdapter {
         Picasso.get().load(generarURL(itemAlo.getUrlimagen())).resize(50,50).into(imagen);
         tvNombre.setText(itemAlo.getNombre());
         tvDesc.setText(itemAlo.getDescripcion());
+        if(position%2==0){
+            convertView.setBackgroundColor(Color.parseColor("#B3E5FC"));
+        }else {
+            convertView.setBackgroundColor(Color.parseColor("#F8BBD0"));
+        }
 
         return convertView;
     }

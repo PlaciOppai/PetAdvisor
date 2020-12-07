@@ -3,8 +3,14 @@ package com.example.petadvisor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -12,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -20,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +37,18 @@ public class AlojamientosActivity extends AppCompatActivity {
     DatabaseReference fireBD;
     ListView listViewItem;
     AdaptardorListV adapterItem;
+    String usuario;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alojamientos);
-        fireBD=FirebaseDatabase.getInstance().getReference();
 
+        setTitle("Alojamientos");
+        fireBD=FirebaseDatabase.getInstance().getReference();
+        Intent intentIni=getIntent();
+        usuario=intentIni.getStringExtra("usuario");
         listViewItem=findViewById(R.id.lvPerso);
 
 
@@ -54,6 +66,17 @@ public class AlojamientosActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item1:
+                return true;
+            case R.id.item2:
+                finish();
+                return true;
+            case R.id.item3:
+                resetContra();
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -103,7 +126,7 @@ public class AlojamientosActivity extends AppCompatActivity {
         });
     }
 
-   public void cargarAlojamientos(){
+    public void cargarAlojamientos(){
         final ArrayList<Alojamientos> aloja= new ArrayList<>();
         fireBD.child("Alojamientos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -127,5 +150,11 @@ public class AlojamientosActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void resetContra(){
+        Intent alojamientosCre= new Intent(getApplicationContext(),CambiarContraActivity.class);
+        startActivityForResult(alojamientosCre,0);
+
     }
 }

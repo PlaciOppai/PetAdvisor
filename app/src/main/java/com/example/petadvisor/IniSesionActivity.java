@@ -40,6 +40,14 @@ public class IniSesionActivity extends AppCompatActivity {
             }
         });
 
+        ((Button)findViewById(R.id.buttonCambioC)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent crear= new Intent(v.getContext(),CambiarContraActivity.class);
+                startActivityForResult(crear,0);
+            }
+        });
+
         ((Button)findViewById(R.id.BotonIni)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +67,7 @@ public class IniSesionActivity extends AppCompatActivity {
                             Log.i("contra",correo);
                             if(task.isSuccessful()){
                                 Intent alojamientosCre= new Intent(getApplicationContext(),AlojamientosActivity.class);
+                                alojamientosCre.putExtra("usuario", correo);
                                 startActivityForResult(alojamientosCre,0);
                             }else{
                                 Log.d("FALLO","onComplete: Failed=" + task.getException().getMessage()); //ADD THIS

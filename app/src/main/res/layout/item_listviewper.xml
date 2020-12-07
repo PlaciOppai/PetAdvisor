@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/imageViewItem"
-        android:layout_width="492dp"
+        android:layout_width="564dp"
         android:layout_height="123dp"
         android:layout_weight="4" />
 
@@ -21,7 +21,10 @@
             android:id="@+id/tvItemNombre"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:text="TextView" />
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvItemDesc"
