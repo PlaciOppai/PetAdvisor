@@ -16,11 +16,17 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,7 +59,53 @@ public class AlojamientosActivity extends AppCompatActivity {
 
 
         cargarComunidades();
-        cargarAlojamientos();
+
+        ((Spinner)findViewById(R.id.spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String nombreC=parent.getItemAtPosition(position).toString();
+                cargarAlojamientos(nombreC);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String nombAlo=((EditText)findViewById(R.id.editTextBuscar)).getText().toString();
+                final ArrayList<Alojamientos> aloja= new ArrayList<>();
+                fireBD.child("Alojamientos").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            for (DataSnapshot a : snapshot.getChildren()) {
+                                String nombre = a.child("nombre").getValue().toString();
+                                String desc = a.child("descripcion").getValue().toString();
+                                String url = a.child("imagen1").getValue().toString();
+
+                                Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+                                if(nombre.toLowerCase().contains(nombAlo)){
+                                    aloja.add(alojamien);
+                                }
+
+                            }
+                            adapterItem= new AdaptardorListV(AlojamientosActivity.this,aloja);
+                            listViewItem.setAdapter(adapterItem);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -126,19 +178,33 @@ public class AlojamientosActivity extends AppCompatActivity {
         });
     }
 
-    public void cargarAlojamientos(){
+    public void cargarAlojamientos(final String comuni){
         final ArrayList<Alojamientos> aloja= new ArrayList<>();
         fireBD.child("Alojamientos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    for(DataSnapshot a : snapshot.getChildren()){
-                        String nombre=a.child("nombre").getValue().toString();
-                        String desc=a.child("descripcion").getValue().toString();
-                        String url=a.child("imagen1").getValue().toString();
+                    if(comuni.equals("") || comuni.equals("Todas")) {
+                        for (DataSnapshot a : snapshot.getChildren()) {
+                            String nombre = a.child("nombre").getValue().toString();
+                            String desc = a.child("descripcion").getValue().toString();
+                            String url = a.child("imagen1").getValue().toString();
 
-                        Alojamientos alojamien=new Alojamientos(nombre,desc,url);
-                        aloja.add(alojamien);
+                            Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+                            aloja.add(alojamien);
+                        }
+                    }else {
+                        for (DataSnapshot a : snapshot.getChildren()) {
+                            String nombre = a.child("nombre").getValue().toString();
+                            String desc = a.child("descripcion").getValue().toString();
+                            String url = a.child("imagen1").getValue().toString();
+                            String comunidad = a.child("comunidad").getValue().toString();
+                            Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+                            if (comunidad.equals(comuni)) {
+                                aloja.add(alojamien);
+                            }
+
+                        }
                     }
                     adapterItem= new AdaptardorListV(AlojamientosActivity.this,aloja);
                     listViewItem.setAdapter(adapterItem);

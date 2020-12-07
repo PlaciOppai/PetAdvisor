@@ -56,7 +56,7 @@ public class IniSesionActivity extends AppCompatActivity {
                 contra=((EditText)findViewById(R.id.editTextContraIni)).getText().toString();
                 Log.i("contra",contra);
 
-                if(correo.isEmpty() && contra.isEmpty()){
+                if(correo.isEmpty() || contra.isEmpty()){
                     ((TextView)findViewById(R.id.tvValidaCorreo)).setText("Obligatorio ingresar correo y contraseña");
                 }else {
 
