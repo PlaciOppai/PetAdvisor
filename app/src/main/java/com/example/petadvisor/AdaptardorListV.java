@@ -52,9 +52,9 @@ public class AdaptardorListV extends BaseAdapter {
         TextView tvNombre =convertView.findViewById(R.id.tvItemNombre);
         TextView tvDesc = convertView.findViewById(R.id.tvItemDesc);
 
-
-
-        Picasso.get().load(generarURL(itemAlo.getUrlimagen())).resize(50,50).into(imagen);
+        String [] imagenes=itemAlo.getImagenes();
+        String url=imagenes[0];
+        Picasso.get().load(generarURL(url)).resize(50,50).into(imagen);
         tvNombre.setText(itemAlo.getNombre());
         tvDesc.setText(itemAlo.getDescripcion());
         if(position%2==0){

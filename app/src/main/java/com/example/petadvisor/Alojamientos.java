@@ -5,19 +5,20 @@ public class Alojamientos {
     private String nombre;
     private String comunidad;
     private String descripcion;
-    private String urlimagen;
+    private String[]imagenes;
+    private String precio;
 
-    public Alojamientos(String nombre, String comunidad, String descripcion, String urlimagen) {
+    public Alojamientos(String nombre, String comunidad, String descripcion, String []imagenes) {
         this.nombre = nombre;
         this.comunidad = comunidad;
         this.descripcion = descripcion;
-        this.urlimagen = urlimagen;
+        this.imagenes = imagenes;
     }
 
-    public Alojamientos(String nombre, String descripcion, String urlimagen) {
+    public Alojamientos(String nombre, String descripcion, String []imagenes) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.urlimagen = urlimagen;
+        this.imagenes = imagenes;
     }
 
     public String getNombre() {
@@ -44,11 +45,19 @@ public class Alojamientos {
         this.descripcion = descripcion;
     }
 
-    public String getUrlimagen() {
-        return urlimagen;
+    public String[] getImagenes() {
+        return imagenes;
     }
 
-    public void setUrlimagen(String urlimagen) {
-        this.urlimagen = urlimagen;
+    public void setImagenes(String[] imagenes) {
+        this.imagenes = imagenes;
+    }
+
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
     }
 }

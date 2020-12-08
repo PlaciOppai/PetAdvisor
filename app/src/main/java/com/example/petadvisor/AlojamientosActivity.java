@@ -50,6 +50,7 @@ public class AlojamientosActivity extends AppCompatActivity {
     AdaptardorListV adapterItem;
     String usuario;
     CircleImageView foto;
+    Alojamientos seleccionado=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +92,15 @@ public class AlojamientosActivity extends AppCompatActivity {
                             for (DataSnapshot a : snapshot.getChildren()) {
                                 String nombre = a.child("nombre").getValue().toString();
                                 String desc = a.child("descripcion").getValue().toString();
-                                String url = a.child("imagen1").getValue().toString();
+                                String imagenes[]=new String[4];
+                                imagenes[0]=a.child("imagen1").getValue().toString();
+                                imagenes[1]=a.child("imagen2").getValue().toString();
+                                imagenes[2]=a.child("imagen3").getValue().toString();
+                                imagenes[3]=a.child("imagen4").getValue().toString();
+                                String precio=a.child("precio").getValue().toString();
+                                Alojamientos alojamien = new Alojamientos(nombre, desc, imagenes);
 
-                                Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+                                alojamien.setPrecio(precio);
                                 if(nombre.toLowerCase().contains(nombAlo)){
                                     aloja.add(alojamien);
                                 }
@@ -117,8 +124,26 @@ public class AlojamientosActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Alojamientos aloSelec= (Alojamientos) parent.getItemAtPosition(position);
-                Picasso.get().load(generarURLAlo(aloSelec.getUrlimagen())).into(foto);
+                seleccionado=aloSelec;
+                String [] imagenes=aloSelec.getImagenes();
+                String url=imagenes[0];
+                Picasso.get().load(generarURLAlo(url)).into(foto);
                 Toast.makeText(AlojamientosActivity.this,"Pulse en la imagen cirular para ver mas detalles",Toast.LENGTH_LONG).show();
+            }
+        });
+        ((CircleImageView)findViewById(R.id.imageCicular)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(seleccionado!=null){
+                    Intent intent=new Intent(getApplicationContext(),DetallesActivity.class);
+                    intent.putExtra("nombreAlo",seleccionado.getNombre());
+                    intent.putExtra("descripcion",seleccionado.getDescripcion());
+                    intent.putExtra("comunidad",seleccionado.getComunidad());
+                    intent.putExtra("imagenes",seleccionado.getImagenes());
+                    intent.putExtra("usuario",usuario);
+                    intent.putExtra("precio",seleccionado.getPrecio());
+                    startActivityForResult(intent,0);
+                }
             }
         });
 
@@ -204,18 +229,29 @@ public class AlojamientosActivity extends AppCompatActivity {
                         for (DataSnapshot a : snapshot.getChildren()) {
                             String nombre = a.child("nombre").getValue().toString();
                             String desc = a.child("descripcion").getValue().toString();
-                            String url = a.child("imagen1").getValue().toString();
+                            String precio=a.child("precio").getValue().toString();
+                            String imagenes[]=new String[4];
+                            imagenes[0]=a.child("imagen1").getValue().toString();
+                            imagenes[1]=a.child("imagen2").getValue().toString();
+                            imagenes[2]=a.child("imagen3").getValue().toString();
+                            imagenes[3]=a.child("imagen4").getValue().toString();
+                            Alojamientos alojamien = new Alojamientos(nombre, desc, imagenes);
+                            alojamien.setPrecio(precio);
 
-                            Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+
                             aloja.add(alojamien);
                         }
                     }else {
                         for (DataSnapshot a : snapshot.getChildren()) {
                             String nombre = a.child("nombre").getValue().toString();
                             String desc = a.child("descripcion").getValue().toString();
-                            String url = a.child("imagen1").getValue().toString();
                             String comunidad = a.child("comunidad").getValue().toString();
-                            Alojamientos alojamien = new Alojamientos(nombre, desc, url);
+                            String imagenes[]=new String[4];
+                            imagenes[0]=a.child("imagen1").getValue().toString();
+                            imagenes[1]=a.child("imagen2").getValue().toString();
+                            imagenes[2]=a.child("imagen3").getValue().toString();
+                            imagenes[3]=a.child("imagen4").getValue().toString();
+                            Alojamientos alojamien = new Alojamientos(nombre, desc, imagenes);
                             if (comunidad.equals(comuni)) {
                                 aloja.add(alojamien);
                             }
