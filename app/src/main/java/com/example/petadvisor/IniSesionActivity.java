@@ -7,10 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.icu.text.CaseMap;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +84,21 @@ public class IniSesionActivity extends AppCompatActivity {
                 }
             }
         });
+        ((ImageButton)findViewById(R.id.imageButtonIni)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        ((EditText)findViewById(R.id.editTextContraIni)).setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        ((EditText)findViewById(R.id.editTextContraIni)).setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+
+                return false;
+            }
+        });
+
     }
 
     private void showAlert(){

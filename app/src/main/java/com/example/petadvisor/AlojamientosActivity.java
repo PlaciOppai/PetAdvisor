@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,13 +41,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AlojamientosActivity extends AppCompatActivity {
 
     DatabaseReference fireBD;
     ListView listViewItem;
     AdaptardorListV adapterItem;
     String usuario;
-
+    CircleImageView foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class AlojamientosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alojamientos);
 
         setTitle("Alojamientos");
+        foto=findViewById(R.id.imageCicular);
         fireBD=FirebaseDatabase.getInstance().getReference();
         Intent intentIni=getIntent();
         usuario=intentIni.getStringExtra("usuario");
@@ -103,6 +109,16 @@ public class AlojamientosActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+
+
+        ((ListView)findViewById(R.id.lvPerso)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Alojamientos aloSelec= (Alojamientos) parent.getItemAtPosition(position);
+                Picasso.get().load(generarURLAlo(aloSelec.getUrlimagen())).into(foto);
+                Toast.makeText(AlojamientosActivity.this,"Pulse en la imagen cirular para ver mas detalles",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -222,5 +238,11 @@ public class AlojamientosActivity extends AppCompatActivity {
         Intent alojamientosCre= new Intent(getApplicationContext(),CambiarContraActivity.class);
         startActivityForResult(alojamientosCre,0);
 
+    }
+
+    public String generarURLAlo(String url){
+        String[] array= url.split("/");
+        String imagenUrlAlo="https://drive.google.com/uc?export=download&id="+array[5];
+        return  imagenUrlAlo;
     }
 }

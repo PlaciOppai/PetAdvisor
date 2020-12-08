@@ -60,6 +60,7 @@
             android:hint="Contraseña"
             android:inputType="textPersonName"
             android:password="true" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -82,6 +83,7 @@
             android:hint="Repita"
             android:inputType="textPersonName"
             android:password="true" />
+
     </LinearLayout>
 
     <TextView
