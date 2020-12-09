@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetallesActivity"></activity>
+        <activity android:name=".ListaReservasActivity"></activity>
+        <activity android:name=".ReservasActivity" />
+        <activity android:name=".DetallesActivity" />
         <activity android:name=".CambiarContraActivity" />
         <activity android:name=".CrearUsuActivity" />
         <activity android:name=".AlojamientosActivity" />

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         ((Button)findViewById(R.id.botonIni)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -22,13 +24,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ((Button)findViewById(R.id.botonVer)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent alojamientos= new Intent(MainActivity.this.getApplicationContext(),AlojamientosActivity.class);
-                startActivityForResult(alojamientos,0);
-            }
-        });
     }
 
 }

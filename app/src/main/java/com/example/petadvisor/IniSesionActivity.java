@@ -36,6 +36,7 @@ public class IniSesionActivity extends AppCompatActivity {
         setTitle("Crear Usuario");
         miFirebase=FirebaseAuth.getInstance();
 
+        //metodo que te lleva a la creacion de usuarios
         ((Button)findViewById(R.id.BotonCrear)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +44,7 @@ public class IniSesionActivity extends AppCompatActivity {
                 startActivityForResult(crear,0);
             }
         });
-
+        //metodo que te lleva a el activity de cambiar contraseña
         ((Button)findViewById(R.id.buttonCambioC)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +53,8 @@ public class IniSesionActivity extends AppCompatActivity {
             }
         });
 
+        //metodo que comprueba tu email y contraseña validando ambos campos
+        //y si todd esta correcto hace login
         ((Button)findViewById(R.id.BotonIni)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +87,8 @@ public class IniSesionActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //meotodo para mostrar o ocultar la contraseña pulsando el boton
         ((ImageButton)findViewById(R.id.imageButtonIni)).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -100,7 +105,7 @@ public class IniSesionActivity extends AppCompatActivity {
         });
 
     }
-
+    //muestra un dialog de error si no puede hacer login
     private void showAlert(){
         AlertDialog.Builder dialog= new AlertDialog.Builder(this);
         dialog.setTitle("Error");

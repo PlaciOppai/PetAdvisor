@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="50dp"
+    android:background="@drawable/fondo"
     android:orientation="vertical"
     tools:context=".IniSesionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
         <TextView
@@ -18,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Correo"
+            android:textColor="@android:color/black"
             android:textSize="24sp" />
 
         <EditText
@@ -26,7 +28,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="ejemplo@gmail.com"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light" />
 
     </LinearLayout>
 
@@ -40,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Contraseña"
+            android:textColor="@android:color/black"
             android:textSize="24sp" />
 
         <EditText
@@ -50,13 +55,16 @@
             android:ems="10"
             android:hint="Contraseña"
             android:inputType="textPersonName"
-            android:password="true" />
+            android:password="true"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light" />
 
         <ImageButton
             android:id="@+id/imageButtonIni"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
+            android:background="@null"
             app:srcCompat="@android:drawable/ic_menu_view" />
 
     </LinearLayout>
@@ -71,11 +79,11 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_gravity="right"
-        android:background="#FFFFFF"
+        android:background="@null"
         android:gravity="right"
         android:text="¿Has olvidado tu contraseña?"
         android:textColor="#E91E63"
-        android:textSize="8sp" />
+        android:textSize="10sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,6 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="9"
+            android:background="#2196F3"
             android:text="Iniciar Sesión" />
 
         <Button
@@ -94,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#CDDC39"
             android:text="Crear Usuario" />
     </LinearLayout>
 

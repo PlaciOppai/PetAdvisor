@@ -67,6 +67,7 @@ public class AlojamientosActivity extends AppCompatActivity {
 
         cargarComunidades();
 
+        //metodo que carga los alojamientos dependiendo de el elemento que añadamos en el spinner
         ((Spinner)findViewById(R.id.spinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +81,7 @@ public class AlojamientosActivity extends AppCompatActivity {
             }
         });
 
+        //cuando pulsamos el boton nos busca por el nombre que haya puesto en el textview
         ((ImageButton)findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +121,7 @@ public class AlojamientosActivity extends AppCompatActivity {
             }
         });
 
-
+        //cuando pulsamos un elemento de la listview cargamos un alojamiento en la imagen circular cambiando su foto
         ((ListView)findViewById(R.id.lvPerso)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -131,24 +133,28 @@ public class AlojamientosActivity extends AppCompatActivity {
                 Toast.makeText(AlojamientosActivity.this,"Pulse en la imagen cirular para ver mas detalles",Toast.LENGTH_LONG).show();
             }
         });
+
+        //le da un listener a la imagen cicular para llevarnos a el activity de detalles si lo pulsamos
+        //llevandos a los detalles del alojamiento que hayamos seleccionado
         ((CircleImageView)findViewById(R.id.imageCicular)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(seleccionado!=null){
+                    String precio=String.valueOf(seleccionado.getPrecio());
                     Intent intent=new Intent(getApplicationContext(),DetallesActivity.class);
                     intent.putExtra("nombreAlo",seleccionado.getNombre());
                     intent.putExtra("descripcion",seleccionado.getDescripcion());
                     intent.putExtra("comunidad",seleccionado.getComunidad());
                     intent.putExtra("imagenes",seleccionado.getImagenes());
                     intent.putExtra("usuario",usuario);
-                    intent.putExtra("precio",seleccionado.getPrecio());
+                    intent.putExtra("precio",precio);
                     startActivityForResult(intent,0);
                 }
             }
         });
 
     }
-
+    //crea el menu conceptual
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
@@ -157,22 +163,27 @@ public class AlojamientosActivity extends AppCompatActivity {
         return true;
     }
 
+    //se encarga de los controlar las opciones del menu
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.item1:
-                return true;
+                Intent intent=new Intent(getApplicationContext(),ListaReservasActivity.class);
+                intent.putExtra("usuario",usuario);
+                startActivityForResult(intent,0);
+                break;
             case R.id.item2:
                 finish();
-                return true;
+                break;
             case R.id.item3:
                 resetContra();
-                return true;
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    //si pulsamos el boton de atras de nuestro movil nos salta un dialog para confirmar que queremos salirnos
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -197,6 +208,7 @@ public class AlojamientosActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    //metodo que carga las comunidades en el spinner
     public void cargarComunidades(){
         final List<Comunidades> listaCom= new ArrayList<>();
         fireBD.child("Comunidades").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -219,6 +231,7 @@ public class AlojamientosActivity extends AppCompatActivity {
         });
     }
 
+    //metodo que carga los alojamientos en la listview
     public void cargarAlojamientos(final String comuni){
         final ArrayList<Alojamientos> aloja= new ArrayList<>();
         fireBD.child("Alojamientos").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -270,12 +283,14 @@ public class AlojamientosActivity extends AppCompatActivity {
         });
     }
 
+    //metodo que nos lleva al cambio de contraseña
     public void resetContra(){
         Intent alojamientosCre= new Intent(getApplicationContext(),CambiarContraActivity.class);
         startActivityForResult(alojamientosCre,0);
 
     }
 
+    //genera una url accesible para cargar las imagenes
     public String generarURLAlo(String url){
         String[] array= url.split("/");
         String imagenUrlAlo="https://drive.google.com/uc?export=download&id="+array[5];
